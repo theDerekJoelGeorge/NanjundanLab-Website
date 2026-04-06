@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="home-page">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nanjundan Lab</title>
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="layout.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="home-page">
+    <nav class="vnav" aria-label="Section navigation">
+      <ul class="vnav__list" role="list">
+        <li>
+          <a class="vnav__link" href="#home" data-section="home" data-tooltip="Home">
+            <img
+              class="vnav__icon"
+              src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2728%27%20height%3D%2728%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20fill%3D%27%236b7280%27%20d%3D%27M12%203.2L2.4%2011.3c-.5.4-.6%201.1-.1%201.6.4.5%201.1.6%201.6.1L5%2013.2V20c0%201.1.9%202%202%202h3.5c.6%200%201-.4%201-1v-4.5c0-.6.4-1%201-1h1c.6%200%201%20.4%201%201V21c0%20.6.4%201%201%201H17c1.1%200%202-.9%202-2v-6.8l1.1.9c.5.4%201.2.3%201.6-.1.4-.5.3-1.2-.1-1.6L12%203.2z%27/%3E%3C/svg%3E"
+              data-active-src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2728%27%20height%3D%2728%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20fill%3D%27%234F7224%27%20d%3D%27M12%203.2L2.4%2011.3c-.5.4-.6%201.1-.1%201.6.4.5%201.1.6%201.6.1L5%2013.2V20c0%201.1.9%202%202%202h3.5c.6%200%201-.4%201-1v-4.5c0-.6.4-1%201-1h1c.6%200%201%20.4%201%201V21c0%20.6.4%201%201%201H17c1.1%200%202-.9%202-2v-6.8l1.1.9c.5.4%201.2.3%201.6-.1.4-.5.3-1.2-.1-1.6L12%203.2z%27/%3E%3C/svg%3E"
+              data-inactive-src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2728%27%20height%3D%2728%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20fill%3D%27%236b7280%27%20d%3D%27M12%203.2L2.4%2011.3c-.5.4-.6%201.1-.1%201.6.4.5%201.1.6%201.6.1L5%2013.2V20c0%201.1.9%202%202%202h3.5c.6%200%201-.4%201-1v-4.5c0-.6.4-1%201-1h1c.6%200%201%20.4%201%201V21c0%20.6.4%201%201%201H17c1.1%200%202-.9%202-2v-6.8l1.1.9c.5.4%201.2.3%201.6-.1.4-.5.3-1.2-.1-1.6L12%203.2z%27/%3E%3C/svg%3E"
+              alt="Home"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+            <span class="vnav__sr">Home</span>
+          </a>
+        </li>
+        <li>
+          <a class="vnav__link" href="#about" data-section="about" data-tooltip="About">
+            <img
+              class="vnav__icon"
+              src="Assets/NavBar/Inactive/About.png"
+              data-active-src="Assets/NavBar/Active/About.png"
+              data-inactive-src="Assets/NavBar/Inactive/About.png"
+              alt="About"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+            <span class="vnav__sr">About</span>
+          </a>
+        </li>
+        <li>
+          <a class="vnav__link" href="#research" data-section="research" data-tooltip="Research">
+            <img
+              class="vnav__icon"
+              src="Assets/NavBar/Inactive/Research.png"
+              data-active-src="Assets/NavBar/Active/Research.png"
+              data-inactive-src="Assets/NavBar/Inactive/Research.png"
+              alt="Research"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+            <span class="vnav__sr">Research</span>
+          </a>
+        </li>
+        <li>
+          <a class="vnav__link" href="#publications" data-section="publications" data-tooltip="Publications">
+            <img
+              class="vnav__icon"
+              src="Assets/NavBar/Inactive/Publications.png"
+              data-active-src="Assets/NavBar/Active/Publications.png"
+              data-inactive-src="Assets/NavBar/Inactive/Publications.png"
+              alt="Publications"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+            <span class="vnav__sr">Publications</span>
+          </a>
+        </li>
+        <li>
+          <a class="vnav__link" href="#team" data-section="team" data-tooltip="Team">
+            <img
+              class="vnav__icon"
+              src="Assets/NavBar/Inactive/Team.png"
+              data-active-src="Assets/NavBar/Active/Team.png"
+              data-inactive-src="Assets/NavBar/Inactive/Team.png"
+              alt="Team"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+            <span class="vnav__sr">Team</span>
+          </a>
+        </li>
+        <li>
+          <a class="vnav__link" href="#contact" data-section="contact" data-tooltip="Contact">
+            <img
+              class="vnav__icon"
+              src="Assets/NavBar/Inactive/Contact.png"
+              data-active-src="Assets/NavBar/Active/Contact.png"
+              data-inactive-src="Assets/NavBar/Inactive/Contact.png"
+              alt="Contact"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+            <span class="vnav__sr">Contact</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="home" class="hero" aria-label="Home hero">
+        <video
+          class="hero__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster="Background.jpg"
+          aria-hidden="true"
+        >
+          <source
+            src="Assets/vecteezy_observing-structure-of-connected-spheres-forming-a-complex_72007489.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div class="hero__overlay" aria-hidden="true"></div>
+        <p class="hero__attribution">
+          <a
+            href="https://www.vecteezy.com/free-videos/graphene"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Graphene Stock Videos by Vecteezy
+          </a>
+        </p>
+        <div class="layout-container hero-content">
+          <h1 class="hero-title">Nanjundan Lab</h1>
+          <p class="hero-subtitle">Chemistry Lab based in University of Southern Queensland, Australia</p>
+        </div>
+      </section>
+
+      <section id="about" class="section about" aria-label="About us">
+        <div class="layout-container about-grid about-grid--intro">
+          <h2 class="heading-xl about-intro__title">About Us</h2>
+          <div class="prose about-intro__prose">
+            <p>
+              Located at University of Southern Queensland in Springfield, our chemistry lab is a collaborative research
+              environment, dedicated to advancing knowledge through experimentation, innovation, and critical inquiry. We
+              bring together students, researchers, and academics to explore a diverse range of chemical sciences, with a
+              strong emphasis on practical application and real‑world impact.
+            </p>
+            <p>
+              Equipped with modern instrumentation and guided by a culture of safety and integrity, our lab fosters
+              hands‑on learning and interdisciplinary collaboration. Our goal is not only to produce high‑quality research,
+              but also to cultivate curiosity, resilience, and the next generation of scientific thinkers.
+            </p>
+          </div>
+
+          <div class="about-media about-intro__media">
+            <div
+              class="about-slideshow"
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Laboratory photo slideshow"
+            >
+              <div class="about-slideshow__track">
+                <div class="about-slideshow__slide is-active">
+                  <img
+                    src="Assets/Slideshow%20Images/museums-victoria-1RFJAx0xz4M-unsplash.jpg"
+                    alt="Laboratory glassware and scientific equipment on a bench"
+                    width="800"
+                    height="600"
+                    decoding="async"
+                  />
+                </div>
+                <div class="about-slideshow__slide">
+                  <img
+                    src="Assets/Slideshow%20Images/rephile-water-UNkNx6Hn9Fs-unsplash.jpg"
+                    alt="Water purification and laboratory filtration setup"
+                    width="800"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="about-slideshow__slide">
+                  <img
+                    src="Assets/Slideshow%20Images/xiazheng1995--y5X8YFApj4-unsplash.jpg"
+                    alt="Researchers collaborating over documents in a lab environment"
+                    width="800"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="about-slideshow__slide">
+                  <img
+                    src="Assets/Slideshow%20Images/h-c-vi-n-cham-soc-s-c-d-p-a-au-V-QQAJ6AOKM-unsplash.jpg"
+                    alt="Hands using tools for detailed scientific or technical work"
+                    width="800"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+              <div class="about-slideshow__dots" role="group" aria-label="Slide indicators">
+                <button type="button" class="about-slideshow__dot is-active" aria-label="Slide 1 of 4" aria-current="true"></button>
+                <button type="button" class="about-slideshow__dot" aria-label="Slide 2 of 4"></button>
+                <button type="button" class="about-slideshow__dot" aria-label="Slide 3 of 4"></button>
+                <button type="button" class="about-slideshow__dot" aria-label="Slide 4 of 4"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="layout-container about-grid about-grid--secondary">
+          <div class="about-media">
+            <img class="card-media" src="Background.jpg" alt="Lab director in the laboratory" />
+          </div>
+          <div class="about-copy">
+            <h3 class="subheading">Message from the Lab Director</h3>
+            <div class="prose prose--director">
+              <p>
+                As Director of the lab, I’ve come to see science as both a discipline of precision and a deeply human
+                pursuit. Our role is to ask meaningful questions and approach them with rigor, creativity, and
+                collaboration.
+              </p>
+              <p>
+                We value not only results, but the process—embracing challenges, learning from unexpected outcomes, and
+                continually refining our understanding. I’m proud to work alongside a team that brings dedication,
+                curiosity, and a genuine enthusiasm for advancing knowledge in chemistry.
+              </p>
+            </div>
+            <div class="signature">
+              <div class="signature-name">Dr Ashok Kumar Nanjundan</div>
+              <div class="signature-title">Lab Director</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="research" class="section research" aria-label="Research">
+        <div class="layout-container">
+          <div class="section-head">
+            <div class="section-head__row">
+              <h2 class="heading-lg">Explore our Research</h2>
+              <div class="section-head__progress" aria-hidden="true">
+                <img
+                  class="section-head__icon"
+                  src="Assets/Green/Assets--Green_0000s_0020_Asset-10@4x.png"
+                  alt=""
+                />
+                <div class="progress-bar">
+                  <div class="progress-bar__fill" style="--progress: 16%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="section-head__subtitle">Short description</p>
+          </div>
+
+          <div class="research-grid">
+            <article class="research-card">
+              <div class="research-card__media" aria-hidden="true"></div>
+              <h3 class="card-title">Title</h3>
+              <p class="card-meta">Short description</p>
+            </article>
+            <article class="research-card">
+              <div class="research-card__media" aria-hidden="true"></div>
+              <h3 class="card-title">Title</h3>
+              <p class="card-meta">Short description</p>
+            </article>
+            <article class="research-card">
+              <div class="research-card__media" aria-hidden="true"></div>
+              <h3 class="card-title">Title</h3>
+              <p class="card-meta">Short description</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="publications" class="section publications" aria-label="Publications">
+        <div class="layout-container">
+          <div class="section-head">
+            <div class="section-head__row">
+              <h2 class="heading-lg">Read our Publications</h2>
+              <div class="section-head__progress" aria-hidden="true">
+                <img
+                  class="section-head__icon"
+                  src="Assets/Green/Assets--Green_0000s_0003_Asset-27@4x.png"
+                  alt=""
+                />
+                <div class="progress-bar">
+                  <div class="progress-bar__fill" style="--progress: 56%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="section-head__subtitle">Short description</p>
+          </div>
+
+          <div class="research-grid publications-grid">
+            <article class="research-card pub-card">
+              <div class="research-card__media" aria-hidden="true"></div>
+              <h3 class="card-title">Title</h3>
+              <p class="pub-authors">Author(s)</p>
+              <p class="card-meta">Short description</p>
+              <p class="pub-date">Date Published</p>
+            </article>
+            <article class="research-card pub-card">
+              <div class="research-card__media" aria-hidden="true"></div>
+              <h3 class="card-title">Title</h3>
+              <p class="pub-authors">Author(s)</p>
+              <p class="card-meta">Short description</p>
+              <p class="pub-date">Date Published</p>
+            </article>
+            <article class="research-card pub-card">
+              <div class="research-card__media" aria-hidden="true"></div>
+              <h3 class="card-title">Title</h3>
+              <p class="pub-authors">Author(s)</p>
+              <p class="card-meta">Short description</p>
+              <p class="pub-date">Date Published</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="team" class="section team" aria-label="Team">
+        <div class="layout-container">
+          <div class="section-head">
+            <div class="section-head__row">
+              <h2 class="heading-lg">Meet the Team</h2>
+              <div class="section-head__progress" aria-hidden="true">
+                <img
+                  class="section-head__icon"
+                  src="Assets/Green/Assets--Green_0000s_0013_Asset-17@4x.png"
+                  alt=""
+                />
+                <div class="progress-bar">
+                  <div class="progress-bar__fill" style="--progress: 78%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="section-head__subtitle">Short description</p>
+          </div>
+
+          <div class="team-grid">
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+            <article class="team-card">
+              <div class="team-avatar" aria-hidden="true"></div>
+              <div class="team-name">Name</div>
+              <div class="team-degree">Degree</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section contact" aria-label="Get in touch">
+        <div class="layout-container">
+          <div class="section-head">
+            <div class="section-head__row">
+              <h2 class="heading-lg">Get in Touch</h2>
+              <div class="section-head__progress" aria-hidden="true">
+                <img
+                  class="section-head__icon"
+                  src="Assets/Green/Assets--Green_0000s_0000_Asset-30@4x.png"
+                  alt=""
+                />
+                <div class="progress-bar">
+                  <div class="progress-bar__fill" style="--progress: 92%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="section-head__subtitle">Short description</p>
+          </div>
+
+          <div class="contact-grid" role="list">
+            <article class="contact-card" role="listitem">
+              <div class="contact-card__icon" aria-hidden="true">
+                <svg class="contact-card__glyph" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div class="contact-card__body">
+                <h3 class="contact-card__label">Location</h3>
+                <p class="contact-card__text">
+                  37 Sinnathamby Boulevard<br />
+                  Springfield Central, QLD 4300,<br />
+                  Australia
+                </p>
+              </div>
+            </article>
+
+            <article class="contact-card" role="listitem">
+              <div class="contact-card__icon" aria-hidden="true">
+                <svg class="contact-card__glyph" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </div>
+              <div class="contact-card__body">
+                <h3 class="contact-card__label">Email</h3>
+                <p class="contact-card__text">
+                  <a class="contact-card__link" href="mailto:email@email.com">email@email.com</a>
+                </p>
+              </div>
+            </article>
+
+            <article class="contact-card" role="listitem">
+              <div class="contact-card__icon" aria-hidden="true">
+                <svg class="contact-card__glyph" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+              </div>
+              <div class="contact-card__body">
+                <h3 class="contact-card__label">Phone</h3>
+                <p class="contact-card__text">
+                  (+61) 4XXXXXXXX<br />
+                  (+61) 4XXXXXXXX
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="contact-map" aria-label="Map showing lab location">
+            <iframe
+              class="contact-map__frame"
+              title="Map: 37 Sinnathamby Boulevard, Springfield Central, Queensland 4300"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=37+Sinnathamby+Boulevard,+Springfield+Central+QLD+4300&output=embed&t=k&z=17"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="acknowledgment" aria-label="Acknowledgment of Country">
+        <div class="acknowledgment__inner">
+          <p class="acknowledgment__text">
+            We acknowledge the First Nations of southern Queensland and their ongoing connection to Country, lands, and waterways.
+            <br />
+            We pay deep respects to Elders past and present.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="layout-container site-footer__inner">
+        <p class="site-footer__copy">Copyright © 2026 Nanjundan Lab. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script defer src="nav.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+/* Page structure and layout */
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+}
+
+.layout-container {
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+}
+
+.layout-stack > * + * {
+  margin-top: var(--stack-gap, 1rem);
+}
+
+.layout-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cluster-gap, 1rem);
+  align-items: center;
+}
