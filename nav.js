@@ -6,15 +6,53 @@
   const prefersReducedMotion =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const sections = links
+    .map((a) => a.dataset.section)
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  let lastActiveId = "";
+
   function setActive(sectionId) {
+    if (sectionId === lastActiveId) return;
+    lastActiveId = sectionId;
     for (const a of links) {
       const isActive = a.dataset.section === sectionId;
       a.classList.toggle("is-active", isActive);
-      a.setAttribute("aria-current", isActive ? "true" : "false");
+      if (isActive) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
       const img = a.querySelector("img");
-      if (img) img.src = isActive ? img.dataset.activeSrc : img.dataset.inactiveSrc;
+      if (img && img.dataset.activeSrc && img.dataset.inactiveSrc) {
+        img.src = isActive ? img.dataset.activeSrc : img.dataset.inactiveSrc;
+      }
     }
   }
+
+  /** Section whose top has crossed this viewport line (ratio of inner height) is "current" — updates as you scroll toward each block. */
+  const ACTIVATION_LINE = 0.36;
+
+  function activeSectionIdFromScroll() {
+    if (!sections.length) return links[0].dataset.section;
+    const line = window.innerHeight * ACTIVATION_LINE;
+    let id = sections[0].id;
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top <= line) id = s.id;
+    }
+    return id;
+  }
+
+  let ticking = false;
+  function onScrollOrResize() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      setActive(activeSectionIdFromScroll());
+    });
+  }
+
+  window.addEventListener("scroll", onScrollOrResize, { passive: true });
+  window.addEventListener("resize", onScrollOrResize, { passive: true });
 
   // Smooth scroll on click (respect reduced motion)
   for (const a of links) {
@@ -25,37 +63,14 @@
       e.preventDefault();
       el.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
       history.replaceState(null, "", `#${id}`);
+      lastActiveId = "";
       setActive(id);
     });
   }
 
-  // Scroll spy via IntersectionObserver
-  const sections = links
-    .map((a) => a.dataset.section)
-    .map((id) => document.getElementById(id))
-    .filter(Boolean);
-
-  const obs = new IntersectionObserver(
-    (entries) => {
-      // pick the entry closest to center that is intersecting
-      const visible = entries.filter((e) => e.isIntersecting);
-      if (!visible.length) return;
-      visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-      const id = visible[0].target.id;
-      setActive(id);
-    },
-    {
-      root: null,
-      threshold: [0.25, 0.35, 0.5, 0.65],
-      rootMargin: "-30% 0px -55% 0px",
-    },
-  );
-
-  for (const s of sections) obs.observe(s);
-
-  // Initial state
   const initial = (location.hash || "#home").slice(1);
   setActive(document.getElementById(initial) ? initial : links[0].dataset.section);
+  queueMicrotask(onScrollOrResize);
 })();
 
 (() => {
