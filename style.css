@@ -14,8 +14,28 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-background);
+  background-color: transparent;
   color: var(--color-foreground);
+}
+
+html {
+  background-color: var(--color-background);
+}
+
+.site__molecules {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 0;
+}
+
+main,
+footer {
+  position: relative;
+  z-index: 1;
 }
 
 /* Hide visible scrollbars (scroll still works). */
@@ -462,6 +482,22 @@ summary:hover {
     pointer;
 }
 
+/* Game page: disable magnifying-glass cursor */
+body.chem-game a:hover,
+body.chem-game button:hover,
+body.chem-game [role="button"]:hover,
+body.chem-game input:hover,
+body.chem-game select:hover,
+body.chem-game textarea:hover,
+body.chem-game summary:hover {
+  cursor: pointer;
+}
+
+/* Game-only utility: hidden hook elements */
+.chem-hidden {
+  display: none;
+}
+
 /* Hero */
 .hero {
   position: relative;
@@ -474,46 +510,12 @@ summary:hover {
   padding-top: calc(var(--nav-height) + 1.75rem);
 }
 
-.hero__video {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
-
 .hero__overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.75);
+  background: transparent;
   pointer-events: none;
-}
-
-.hero__attribution {
-  position: absolute;
-  z-index: 3;
-  right: max(1rem, env(safe-area-inset-right, 0px));
-  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
-  margin: 0;
-  max-width: min(14rem, 52vw);
-  font-size: 0.65rem;
-  line-height: 1.35;
-  text-align: right;
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-}
-
-.hero__attribution a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 0.1em;
-}
-
-.hero__attribution a:hover {
-  color: #ffffff;
 }
 
 .hero-content {
@@ -522,10 +524,15 @@ summary:hover {
   padding-block: 4rem;
   /* Own compositor layer so title/subtitle paint isn’t tied as tightly to video frame updates */
   transform: translateZ(0);
+  text-align: center;
+}
+
+.hero-content > * {
+  margin-inline: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__video {
+  .hero__molecules {
     display: none;
   }
 
@@ -534,9 +541,7 @@ summary:hover {
   }
 
   .hero {
-    background-image:
-      linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-      url("Background.jpg");
+    background-image: url("Background.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -544,7 +549,7 @@ summary:hover {
 }
 
 .hero-title {
-  color: #fff;
+  color: var(--color-foreground);
   font-size: clamp(3rem, 7vw, 6rem);
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -553,9 +558,13 @@ summary:hover {
 
 .hero-subtitle {
   margin-top: 0.75rem;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   font-weight: 700;
   font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+}
+
+.hero-subtitle__dot {
+  color: currentColor;
 }
 
 /* Sections */
@@ -563,8 +572,16 @@ summary:hover {
   padding-block: clamp(3.5rem, 6vw, 6rem);
 }
 
+/* Speed up initial render: skip offscreen sections until needed. */
+.section:not(.hero),
+.acknowledgment,
+.site-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
+}
+
 .about {
-  background: #fff;
+  background: transparent;
 }
 
 /* Section head w/ progress bar */
@@ -619,11 +636,11 @@ summary:hover {
 
 /* Research cards */
 .research {
-  background: #fff;
+  background: transparent;
 }
 
 .publications {
-  background: #fff;
+  background: transparent;
 }
 
 .research-grid {
@@ -638,7 +655,7 @@ summary:hover {
 }
 
 .team {
-  background: #fff;
+  background: transparent;
 }
 
 .team-grid {
@@ -919,6 +936,381 @@ summary:hover {
 .chem-shell__inner {
   display: grid;
   gap: 1.25rem;
+}
+
+/* --- Game layout v2 (matches reference screenshot) --- */
+.chem-shell--v2 .chem-shell__inner {
+  gap: 1.1rem;
+}
+
+.chem-hdr {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.chem-hdr__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.chem-title {
+  font-size: clamp(2.4rem, 4.8vw, 3.35rem);
+  font-weight: 1000;
+  letter-spacing: -0.03em;
+  color: var(--color-secondary);
+  line-height: 1.02;
+}
+
+.chem-sub {
+  margin-top: 0.55rem;
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  color: #1f2937;
+  font-weight: 900;
+}
+
+.chem-sub__k {
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #111827;
+}
+
+.chem-sub__v {
+  font-size: 1.2rem;
+  font-weight: 1000;
+  color: #111827;
+}
+
+.chem-score {
+  text-align: right;
+  min-width: 6.5rem;
+}
+
+.chem-score__label {
+  font-size: 0.75rem;
+  font-weight: 1000;
+  letter-spacing: 0.03em;
+  color: #111827;
+  text-transform: uppercase;
+}
+
+.chem-score__value {
+  margin-top: 0.15rem;
+  font-size: 2.35rem;
+  font-weight: 1100;
+  letter-spacing: -0.02em;
+  color: #7BA448;
+  line-height: 1;
+}
+
+.chem-timer__label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 1000;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #111827;
+  font-size: 0.78rem;
+}
+
+.chem-timer__text {
+  font-weight: 1000;
+  color: #334155;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+.chem-timer__bar {
+  margin-top: 0.45rem;
+  height: 10px;
+  width: 100%;
+  background: #d9d9d9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.chem-timer__fill {
+  height: 100%;
+  width: 100%;
+  background: #4F7224;
+  border-radius: 999px;
+  transition: width 160ms linear;
+}
+
+.chem-stage {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.chem-canvas--v2 {
+  height: min(56vh, 520px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.90));
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  box-shadow: none;
+  padding-bottom: 72px; /* space for the in-canvas control strip */
+}
+
+.chem-canvas__label {
+  position: absolute;
+  left: 1.15rem;
+  top: 1rem;
+  font-size: 0.8rem;
+  font-weight: 1000;
+  letter-spacing: 0.06em;
+  color: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}
+
+.chem-stage__footer {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 5;
+  pointer-events: auto;
+}
+
+.chem-stage__footerRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.chem-iconbar {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.chem-iconbtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  color: #111827;
+  transition:
+    transform 80ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.chem-iconbtn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.chem-iconbtn:active {
+  transform: translateY(1px);
+}
+
+.chem-iconbtn.is-active,
+.chem-iconbtn[aria-pressed="true"] {
+  background: rgba(123, 164, 72, 0.18);
+  border-color: rgba(123, 164, 72, 0.55);
+}
+
+.chem-hudline {
+  display: flex;
+  gap: 1.15rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  min-width: 0;
+  width: 100%;
+}
+
+.chem-hudline__item {
+  font-weight: 900;
+  color: #111827;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.chem-hudline__item:last-child {
+  white-space: normal;
+  min-width: min(58ch, 60vw);
+}
+
+.chem-hudline__k {
+  color: #6b7280;
+  font-weight: 1000;
+}
+
+.chem-stage__actions {
+  display: inline-flex;
+  gap: 0.65rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.chem-btn--wide {
+  padding-inline: 1.55rem;
+}
+
+.chem-bottom {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.chem-bottomcard {
+  padding: 10px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.06),
+    0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.chem-bottomcard__title {
+  font-weight: 1000;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}
+
+.chem-palette--v2 {
+  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(112px, max-content));
+  gap: 8px;
+  justify-content: start;
+}
+
+.chem-atom--v2 {
+  grid-template-columns: 40px 1fr;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  min-height: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.chem-atom--v2 .chem-atom__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.chem-atom--v2 .chem-atom__sym {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid #d1d5db;
+  color: #111827;
+  font-size: 1.05rem;
+  font-weight: 1000;
+  letter-spacing: -0.02em;
+  box-shadow: none;
+}
+
+.chem-atom--v2[data-element="C"] .chem-atom__sym {
+  background: #111111;
+  border-color: #111111;
+  color: #ffffff;
+}
+
+.chem-atom__name {
+  font-size: 1.05rem;
+  font-weight: 1000;
+  color: #111111;
+  line-height: 1.05;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chem-atom__meta {
+  margin-top: 2px;
+  font-size: 1rem;
+  color: #7BA448;
+  font-weight: 900;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.chem-atom__meta {
+  display: block;
+  margin-top: 0.1rem;
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.chem-bottom__right {
+  display: grid;
+  gap: 1rem;
+}
+
+.chem-bondstack {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.chem-btn--stack {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.chem-bondstack .chem-btn--stack::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #d9d9d9;
+  flex: 0 0 auto;
+}
+
+.chem-toolgrid {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+.chem-settingsgrid {
+  margin-top: 0.85rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.chem-settingsgrid .chem-select {
+  min-width: 100%;
 }
 
 .chem-topbar {
@@ -1373,13 +1765,43 @@ summary:hover {
   .chem-select {
     min-width: min(34rem, 84vw);
   }
+
+  .chem-hdr__row {
+    align-items: flex-start;
+  }
+
+  .chem-stage__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chem-iconbar {
+    justify-content: flex-start;
+  }
+
+  .chem-hudline__item:last-child {
+    min-width: 0;
+  }
+
+  .chem-stage__actions {
+    justify-content: flex-end;
+  }
+
+  .chem-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .chem-palette--v2 {
+    grid-template-columns: repeat(auto-fit, minmax(112px, max-content));
+    justify-content: start;
+  }
 }
 
 /* Contact — Get in Touch */
 .contact {
   --contact-icon-size: 4.5rem; /* 72px — within 60–80px reference */
   --contact-icon-gap: 1.125rem; /* 18px — within 15–20px reference */
-  background: #fff;
+  background: transparent;
 }
 
 .contact-grid {
@@ -1540,7 +1962,7 @@ summary:hover {
 /* Site footer */
 .site-footer {
   padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
-  background: #ffffff;
+  background: transparent;
   border-top: 1px solid rgba(79, 114, 36, 0.12);
 }
 

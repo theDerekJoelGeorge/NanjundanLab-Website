@@ -63,6 +63,12 @@
     btnRing6: document.getElementById("btnRing6"),
     btnAromatic: document.getElementById("btnAromatic"),
     btnSnap: document.getElementById("btnSnap"),
+    btnSkip: document.getElementById("btnSkip"),
+    btnRedo: document.getElementById("btnRedo"),
+    scoreValue: document.getElementById("scoreValue"),
+    timerFill: document.getElementById("timerFill"),
+    timeText: document.getElementById("timeText"),
+    timerBar: document.querySelector(".chem-timer__bar"),
   };
   const feedbackWrap = document.querySelector(".chem-feedback");
 
@@ -266,6 +272,106 @@
   let answerShown = false;
   let savedAttempt = null; // {atoms:any[], bonds:any[], feedbackText:string, feedbackKind:string, factText:string, factHidden:boolean}
 
+  let score = 0;
+  let timerTotalMs = 0;
+  let timerEndsAt = 0;
+  let timerInterval = null;
+
+  /** @type {Array<{atoms:any[], bonds:any[]}>} */
+  const undoStack = [];
+  /** @type {Array<{atoms:any[], bonds:any[]}>} */
+  const redoStack = [];
+
+  function snapshotState() {
+    return { atoms: structuredClone(atoms), bonds: structuredClone(bonds) };
+  }
+
+  function pushUndo() {
+    undoStack.push(snapshotState());
+    if (undoStack.length > 80) undoStack.shift();
+    redoStack.length = 0;
+  }
+
+  function restoreSnapshot(snap) {
+    atoms = structuredClone(snap.atoms);
+    bonds = structuredClone(snap.bonds);
+    connectFromAtomId = null;
+    dragging = null;
+    bondDrag = null;
+    erasing = null;
+    render();
+    updateStatus();
+  }
+
+  function doUndo() {
+    if (!undoStack.length) return;
+    redoStack.push(snapshotState());
+    const prev = undoStack.pop();
+    restoreSnapshot(prev);
+    setFeedback("Undid last action.", "info");
+  }
+
+  function doRedo() {
+    if (!redoStack.length) return;
+    undoStack.push(snapshotState());
+    const next = redoStack.pop();
+    restoreSnapshot(next);
+    setFeedback("Redid action.", "info");
+  }
+
+  function formatMMSS(ms) {
+    const s = Math.max(0, Math.ceil(ms / 1000));
+    const mm = String(Math.floor(s / 60)).padStart(2, "0");
+    const ss = String(s % 60).padStart(2, "0");
+    return `${mm}:${ss}`;
+  }
+
+  function setScore(next) {
+    score = Math.max(0, next | 0);
+    if (ui.scoreValue) ui.scoreValue.textContent = String(score).padStart(2, "0");
+  }
+
+  function timerDurationMsFor(level) {
+    const diff = level.difficulty || "easy";
+    if (diff === "easy") return 90_000;
+    if (diff === "medium") return 75_000;
+    if (diff === "hard") return 60_000;
+    if (diff === "hardcore") return 45_000;
+    return 75_000;
+  }
+
+  function stopTimer() {
+    if (timerInterval) window.clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  function renderTimer() {
+    if (!ui.timerFill || !ui.timeText) return;
+    if (!timerTotalMs || !timerEndsAt) {
+      ui.timerFill.style.width = "100%";
+      ui.timeText.textContent = "—";
+      ui.timerBar?.setAttribute?.("aria-valuenow", "100");
+      return;
+    }
+    const left = Math.max(0, timerEndsAt - Date.now());
+    const pct = Math.max(0, Math.min(100, (left / timerTotalMs) * 100));
+    ui.timerFill.style.width = `${pct}%`;
+    ui.timeText.textContent = formatMMSS(left);
+    ui.timerBar?.setAttribute?.("aria-valuenow", String(Math.round(pct)));
+    if (left <= 0) {
+      stopTimer();
+      setFeedback("Time’s up. You can still submit, or press Skip to move on.", "bad");
+    }
+  }
+
+  function startTimerForLevel(level) {
+    timerTotalMs = timerDurationMsFor(level);
+    timerEndsAt = Date.now() + timerTotalMs;
+    stopTimer();
+    renderTimer();
+    timerInterval = window.setInterval(renderTimer, 150);
+  }
+
   function uid(prefix) {
     return `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
   }
@@ -329,6 +435,7 @@
   }
 
   function addAtom(element, x, y) {
+    pushUndo();
     const id = uid("a");
     const p = clampToWorkspace(x, y);
     atoms.push({ id, element, x: p.x, y: p.y });
@@ -339,6 +446,7 @@
   }
 
   function removeAtom(atomId) {
+    pushUndo();
     atoms = atoms.filter((a) => a.id !== atomId);
     bonds = bonds.filter((b) => b.a !== atomId && b.b !== atomId);
     if (connectFromAtomId === atomId) connectFromAtomId = null;
@@ -355,6 +463,7 @@
   }
 
   function removeBond(bondId) {
+    pushUndo();
     bonds = bonds.filter((b) => b.id !== bondId);
     render();
     updateStatus();
@@ -367,6 +476,7 @@
       setFeedback("That bond would exceed an atom’s allowed valence.", "bad");
       return;
     }
+    pushUndo();
     if (existing) existing.order = order;
     else bonds.push({ id: uid("b"), a, b, order });
     render();
@@ -374,6 +484,7 @@
   }
 
   function cycleBondOrder(bond) {
+    pushUndo();
     const cur = bond.order;
     for (let step = 1; step <= 3; step++) {
       const next = ((cur + step - 1) % 3) + 1; // 1..3
@@ -597,15 +708,19 @@
     const level = getLevel();
     const f = parseFormula(level.formula);
     const have = atomCounts(atoms);
-    ui.statusCounts.textContent = `${formatCounts(have)} / need ${formatCounts(f)}`;
+    if (ui.statusCounts) ui.statusCounts.textContent = `${formatCounts(have)} / need ${formatCounts(f)}`;
 
     const conn = connectivityStatus();
-    ui.statusConn.textContent = conn.ok ? "Connected" : "Disconnected";
-    ui.statusConn.dataset.ok = conn.ok ? "true" : "false";
+    if (ui.statusConn) {
+      ui.statusConn.textContent = conn.ok ? "Connected" : "Disconnected";
+      ui.statusConn.dataset.ok = conn.ok ? "true" : "false";
+    }
 
     const valErr = validateValency();
-    ui.statusValence.textContent = valErr.length ? "Invalid" : "OK";
-    ui.statusValence.dataset.ok = valErr.length ? "false" : "true";
+    if (ui.statusValence) {
+      ui.statusValence.textContent = valErr.length ? "Invalid" : "OK";
+      ui.statusValence.dataset.ok = valErr.length ? "false" : "true";
+    }
   }
 
   function render() {
@@ -698,6 +813,8 @@
   }
 
   function resetWorkspace({ keepLevel = true } = {}) {
+    undoStack.length = 0;
+    redoStack.length = 0;
     atoms = [];
     bonds = [];
     connectFromAtomId = null;
@@ -719,7 +836,7 @@
     currentLevelId = level.id;
     ui.levelSelect.value = level.id;
     ui.levelFormula.textContent = level.formula;
-    ui.levelClue.textContent = level.clue || (level.name ? level.name : "");
+    ui.levelClue.textContent = level.name ? level.name : (level.clue || "");
     setFeedback("Build a structure that matches the formula, then submit.", "info");
     setFact("");
     answerShown = false;
@@ -729,6 +846,7 @@
       ui.btnAnswer.setAttribute("aria-pressed", "false");
     }
     resetWorkspace({ keepLevel: true });
+    startTimerForLevel(level);
   }
 
   function setMolecule(atomsIn, bondsIn) {
@@ -1129,6 +1247,8 @@
 
     setFeedback("Correct.", "good");
     setFact(level.fact || "");
+    stopTimer();
+    setScore(score + 1);
     return true;
   }
 
@@ -1515,9 +1635,31 @@
       const level = getLevel();
       setFeedback(level.hint || "Try building a valid structure for the formula.", "info");
     });
-    ui.btnRing6.addEventListener("click", () => makeRing6());
-    ui.btnAromatic.addEventListener("click", () => alternateRingDoubles());
-    ui.btnSnap.addEventListener("click", () => snapLayout());
+    ui.btnRing6?.addEventListener("click", () => makeRing6());
+    ui.btnAromatic?.addEventListener("click", () => alternateRingDoubles());
+    ui.btnSnap?.addEventListener("click", () => snapLayout());
+    ui.btnSkip?.addEventListener("click", () => {
+      const visible = LEVELS.filter((l) => (l.difficulty || "easy") === currentDifficulty);
+      const idx = Math.max(0, visible.findIndex((l) => l.id === currentLevelId));
+      const next = visible[(idx + 1) % Math.max(1, visible.length)] || visible[0] || LEVELS[0];
+      loadLevel(next.id);
+    });
+    ui.btnRedo?.addEventListener("click", () => doUndo());
+
+    window.addEventListener("keydown", (e) => {
+      const isMac = navigator.platform.toLowerCase().includes("mac");
+      const mod = isMac ? e.metaKey : e.ctrlKey;
+      if (!mod) return;
+      const key = e.key.toLowerCase();
+      if (key === "z") {
+        e.preventDefault();
+        if (e.shiftKey) doRedo();
+        else doUndo();
+      } else if (key === "y") {
+        e.preventDefault();
+        doRedo();
+      }
+    });
   }
 
   function setDifficulty(next) {
@@ -1792,6 +1934,7 @@
   }
 
   // ---- boot ----
+  setScore(0);
   if (ui.difficultySelect) {
     ui.difficultySelect.value = currentDifficulty;
     ui.difficultySelect.addEventListener("change", () => setDifficulty(ui.difficultySelect.value));

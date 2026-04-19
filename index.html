@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="home-page">
+    <canvas class="site__molecules" aria-hidden="true"></canvas>
     <nav class="vnav" aria-label="Section navigation">
       <ul class="vnav__list" role="list">
         <li>
@@ -106,34 +107,13 @@
 
     <main>
       <section id="home" class="hero" aria-label="Home hero">
-        <video
-          class="hero__video"
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="auto"
-          poster="Background.jpg"
-          aria-hidden="true"
-        >
-          <source
-            src="Assets/vecteezy_observing-structure-of-connected-spheres-forming-a-complex_72007489.mp4"
-            type="video/mp4"
-          />
-        </video>
         <div class="hero__overlay" aria-hidden="true"></div>
-        <p class="hero__attribution">
-          <a
-            href="https://www.vecteezy.com/free-videos/graphene"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Graphene Stock Videos by Vecteezy
-          </a>
-        </p>
         <div class="layout-container hero-content">
-          <h1 class="hero-title">Nanjundan Lab</h1>
-          <p class="hero-subtitle">Chemistry Lab based in University of Southern Queensland, Australia</p>
+          <h1 class="hero-title">NANJUNDAN LAB</h1>
+          <p class="hero-subtitle">
+            Graphene Nanomaterials <span class="hero-subtitle__dot">•</span> Next Generation Batteries
+            <span class="hero-subtitle__dot">•</span> Circular Economy Energy Materials
+          </p>
         </div>
       </section>
 
@@ -142,10 +122,7 @@
           <h2 class="heading-xl about-intro__title">About Us</h2>
           <div class="prose about-intro__prose">
             <p>
-              Located at University of Southern Queensland in Springfield, our chemistry lab is a collaborative research
-              environment, dedicated to advancing knowledge through experimentation, innovation, and critical inquiry. We
-              bring together students, researchers, and academics to explore a diverse range of chemical sciences, with a
-              strong emphasis on practical application and real‑world impact.
+              We are an interdisciplinary research group at the University of Southern Queensland focused on developing next-generation solutions in nanomaterials, energy storage, and sustainable chemistry. Our research bridges fundamental materials science with applied innovation, spanning green solvents, battery recycling, and electrocatalysis, while combining experimental investigation with computational methods to tackle urgent global challenges in energy, environment, and resource sustainability.
             </p>
             <p>
               Equipped with modern instrumentation and guided by a culture of safety and integrity, our lab fosters
@@ -214,7 +191,7 @@
 
         <div class="layout-container about-grid about-grid--secondary">
           <div class="about-media">
-            <img class="card-media" src="Background.jpg" alt="Lab director in the laboratory" />
+            <img class="card-media" src="Background.jpg" alt="Lab director in the laboratory" loading="lazy" decoding="async" />
           </div>
           <div class="about-copy">
             <h3 class="subheading">Message from the Lab Director</h3>
@@ -248,6 +225,8 @@
                   class="section-head__icon"
                   src="Assets/Green/Assets--Green_0000s_0020_Asset-10@4x.png"
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="progress-bar">
                   <div class="progress-bar__fill" style="--progress: 16%"></div>
@@ -287,6 +266,8 @@
                   class="section-head__icon"
                   src="Assets/Green/Assets--Green_0000s_0003_Asset-27@4x.png"
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="progress-bar">
                   <div class="progress-bar__fill" style="--progress: 56%"></div>
@@ -332,6 +313,8 @@
                   class="section-head__icon"
                   src="Assets/Green/Assets--Green_0000s_0013_Asset-17@4x.png"
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="progress-bar">
                   <div class="progress-bar__fill" style="--progress: 78%"></div>
@@ -396,6 +379,8 @@
                   class="section-head__icon"
                   src="Assets/Green/Assets--Green_0000s_0000_Asset-30@4x.png"
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="progress-bar">
                   <div class="progress-bar__fill" style="--progress: 92%"></div>
@@ -479,10 +464,11 @@
 
     <footer class="site-footer">
       <div class="layout-container site-footer__inner">
-        <p class="site-footer__copy">Copyright © 2026 Nanjundan Lab. All rights reserved.</p>
+        <p class="site-footer__copy">© 2026 Nanjundan Lab · University of Southern Queensland · All rights reserved.</p>
       </div>
     </footer>
 
     <script defer src="nav.js"></script>
+    <script defer src="hero-molecules.js"></script>
   </body>
 </html>

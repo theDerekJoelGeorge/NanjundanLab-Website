@@ -10,126 +10,179 @@
   </head>
   <body class="chem-game">
     <main class="chem-game__main">
-      <section class="chem-shell" aria-label="Chemistry puzzle game">
+      <section class="chem-shell chem-shell--v2" aria-label="Chemistry puzzle game">
         <div class="layout-container chem-shell__inner">
-          <header class="chem-topbar">
-            <div class="chem-level">
-              <div class="chem-level__label">Formula</div>
-              <div id="levelFormula" class="chem-level__formula" aria-live="polite">—</div>
-              <div id="levelClue" class="chem-level__clue" aria-live="polite"></div>
+          <header class="chem-hdr">
+            <div class="chem-hdr__row">
+              <div class="chem-titlewrap">
+                <div id="levelClue" class="chem-title" aria-live="polite">—</div>
+                <div class="chem-sub">
+                  <span class="chem-sub__k">Formula</span>
+                  <span id="levelFormula" class="chem-sub__v" aria-live="polite">—</span>
+                </div>
+              </div>
+
+              <div class="chem-score" aria-label="Score">
+                <div class="chem-score__label">Score</div>
+                <div id="scoreValue" class="chem-score__value">00</div>
+              </div>
             </div>
 
-            <div class="chem-topbar__actions">
-              <div class="chem-level-select">
-                <label class="chem-control__label" for="levelSelect">Level</label>
-                <select id="levelSelect" class="chem-select" aria-label="Select level"></select>
+            <div class="chem-timer" aria-label="Time remaining">
+              <div class="chem-timer__label">
+                <span>Time remaining</span>
+                <span id="timeText" class="chem-timer__text">—</span>
               </div>
-              <div class="chem-level-select">
-                <label class="chem-control__label" for="difficultySelect">Difficulty</label>
-                <select id="difficultySelect" class="chem-select chem-select--sm" aria-label="Select difficulty">
-                  <option value="easy">Easy</option>
-                  <option value="medium">Medium</option>
-                  <option value="hard">Hard</option>
-                  <option value="hardcore">Hardcore</option>
-                </select>
+              <div class="chem-timer__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                <div id="timerFill" class="chem-timer__fill" style="width: 100%"></div>
               </div>
-              <button id="btnEraser" class="chem-btn chem-btn--ghost" type="button" aria-pressed="false">Eraser</button>
-              <button id="btnAnswer" class="chem-btn chem-btn--ghost" type="button" aria-pressed="false">Show answer</button>
-              <button id="btnHint" class="chem-btn chem-btn--ghost" type="button">Hint</button>
-              <button id="btnReset" class="chem-btn chem-btn--ghost" type="button">Clear</button>
-              <button id="btnValidate" class="chem-btn chem-btn--primary" type="button">Submit</button>
             </div>
           </header>
 
-          <div class="chem-layout">
-            <aside class="chem-panel" aria-label="Building palette and tools">
-              <div class="chem-card">
-                <div class="chem-card__title">Atoms</div>
-                <div class="chem-palette" role="list">
-                  <button class="chem-atom" type="button" data-element="C" aria-label="Add carbon">
-                    <span class="chem-atom__sym">C</span><span class="chem-atom__name">Carbon</span>
-                  </button>
-                  <button class="chem-atom" type="button" data-element="H" aria-label="Add hydrogen">
-                    <span class="chem-atom__sym">H</span><span class="chem-atom__name">Hydrogen</span>
-                  </button>
-                  <button class="chem-atom" type="button" data-element="O" aria-label="Add oxygen">
-                    <span class="chem-atom__sym">O</span><span class="chem-atom__name">Oxygen</span>
-                  </button>
-                  <button class="chem-atom" type="button" data-element="N" aria-label="Add nitrogen">
-                    <span class="chem-atom__sym">N</span><span class="chem-atom__name">Nitrogen</span>
-                  </button>
-                  <button class="chem-atom" type="button" data-element="Cl" aria-label="Add chlorine">
-                    <span class="chem-atom__sym">Cl</span><span class="chem-atom__name">Chlorine</span>
-                  </button>
-                </div>
-              </div>
-
-              <div class="chem-card">
-                <div class="chem-card__title">Bonds</div>
-                <div class="chem-bondtools">
-                  <button id="bondSingle" class="chem-btn chem-btn--seg is-active" type="button" data-bond="1">
-                    Single
-                  </button>
-                  <button id="bondDouble" class="chem-btn chem-btn--seg" type="button" data-bond="2">Double</button>
-                  <button id="bondTriple" class="chem-btn chem-btn--seg" type="button" data-bond="3">Triple</button>
-                </div>
-                <div class="chem-help">
-                  Drag from an atom’s edge handle to another atom to bond.<br />
-                  Click a bond to cycle order.<br />
-                  Right‑click an atom/bond to delete.
-                </div>
-              </div>
-
-              <div class="chem-card">
-                <div class="chem-card__title">Helpers</div>
-                <div class="chem-helpergrid">
-                  <button id="btnRing6" class="chem-btn chem-btn--ghost" type="button">Make 6‑ring</button>
-                  <button id="btnAromatic" class="chem-btn chem-btn--ghost" type="button">Alternate doubles</button>
-                  <button id="btnSnap" class="chem-btn chem-btn--ghost" type="button">Snap layout</button>
-                </div>
-              </div>
-
-              <div class="chem-card">
-                <div class="chem-card__title">Status</div>
-                <div class="chem-status">
-                  <div class="chem-status__row">
-                    <div class="chem-status__k">Counts</div>
-                    <div id="statusCounts" class="chem-status__v">—</div>
+          <section class="chem-stage" aria-label="Molecule workspace">
+            <div id="workspace" class="chem-canvas chem-canvas--v2" role="application" aria-label="Molecule canvas" tabindex="0">
+              <div class="chem-canvas__label" aria-hidden="true">CANVAS</div>
+              <svg id="bondLayer" class="chem-bonds" aria-hidden="true"></svg>
+              <div id="atomLayer" class="chem-atoms" aria-hidden="false"></div>
+              <div class="chem-stage__footer" aria-label="Canvas controls">
+                <div class="chem-hudline" aria-label="Mode and tips">
+                  <div class="chem-hudline__item"><span class="chem-hudline__k">Mode:</span> <span id="hudMode">Connect</span></div>
+                  <div class="chem-hudline__item"><span class="chem-hudline__k">Bond:</span> <span id="hudBond">Single</span></div>
+                  <div class="chem-hudline__item">
+                    <span class="chem-hudline__k">Tip:</span>
+                    <span id="hudTip">Drag atoms from the palette and connect with bonds.</span>
                   </div>
-                  <div class="chem-status__row">
-                    <div class="chem-status__k">Connectivity</div>
-                    <div id="statusConn" class="chem-status__v">—</div>
+                </div>
+
+                <div class="chem-stage__footerRow" aria-label="Controls row">
+                  <div class="chem-iconbar" aria-label="Quick controls">
+                    <button id="btnReset" class="chem-iconbtn" type="button" aria-label="Clear">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 11v7M14 11v7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </button>
+                    <button id="btnRedo" class="chem-iconbtn" type="button" aria-label="Undo">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M9 10H5V6M5 10a8 8 0 1 1 2.3 5.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </button>
+                    <button id="btnEraser" class="chem-iconbtn" type="button" aria-label="Erase" aria-pressed="false">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M3 17 13 7l4 4L7 21H5a2 2 0 0 1-2-2v-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                        <path d="M14.5 5.5 18.5 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M7 21h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </button>
+                    <button id="btnHint" class="chem-iconbtn" type="button" aria-label="Hint">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M9 18h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 22h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 2a7 7 0 0 0-4 12.7V16a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-1.3A7 7 0 0 0 12 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </button>
                   </div>
-                  <div class="chem-status__row">
-                    <div class="chem-status__k">Valency</div>
-                    <div id="statusValence" class="chem-status__v">—</div>
+
+                  <div class="chem-stage__actions" aria-label="Primary actions">
+                    <button id="btnSkip" class="chem-btn chem-btn--ghost chem-btn--wide" type="button">Skip</button>
+                    <button id="btnValidate" class="chem-btn chem-btn--primary chem-btn--wide" type="button">Submit</button>
                   </div>
                 </div>
               </div>
-            </aside>
+            </div>
 
-            <section class="chem-work" aria-label="Molecule workspace">
-              <div class="chem-work__hud">
-                <div class="chem-hudpill"><span class="chem-hudpill__k">Mode</span> <span id="hudMode">Connect</span></div>
-                <div class="chem-hudpill">
-                  <span class="chem-hudpill__k">Bond</span> <span id="hudBond">Single</span>
+            <div class="chem-feedback" aria-live="polite" aria-atomic="true">
+              <div id="feedback" class="chem-feedback__text">Build a structure that matches the formula, then submit.</div>
+              <div id="fact" class="chem-feedback__fact" hidden></div>
+            </div>
+          </section>
+
+          <section class="chem-bottom" aria-label="Building palette and tools">
+            <div class="chem-bottom__left">
+              <div class="chem-bottomcard">
+                <div class="chem-bottomcard__title">Atoms</div>
+                <div class="chem-palette chem-palette--v2" role="list">
+                  <button class="chem-atom chem-atom--v2" type="button" data-element="C" aria-label="Add carbon">
+                    <span class="chem-atom__sym">C</span>
+                    <span class="chem-atom__info">
+                      <span class="chem-atom__name">Carbon</span>
+                      <span class="chem-atom__meta">Valence: 4</span>
+                    </span>
+                  </button>
+                  <button class="chem-atom chem-atom--v2" type="button" data-element="H" aria-label="Add hydrogen">
+                    <span class="chem-atom__sym">H</span>
+                    <span class="chem-atom__info">
+                      <span class="chem-atom__name">Hydrogen</span>
+                      <span class="chem-atom__meta">Valence: 1</span>
+                    </span>
+                  </button>
+                  <button class="chem-atom chem-atom--v2" type="button" data-element="O" aria-label="Add oxygen">
+                    <span class="chem-atom__sym">O</span>
+                    <span class="chem-atom__info">
+                      <span class="chem-atom__name">Oxygen</span>
+                      <span class="chem-atom__meta">Valence: 2</span>
+                    </span>
+                  </button>
+                  <button class="chem-atom chem-atom--v2" type="button" data-element="N" aria-label="Add nitrogen">
+                    <span class="chem-atom__sym">N</span>
+                    <span class="chem-atom__info">
+                      <span class="chem-atom__name">Nitrogen</span>
+                      <span class="chem-atom__meta">Valence: 3</span>
+                    </span>
+                  </button>
+                  <button class="chem-atom chem-atom--v2" type="button" data-element="Cl" aria-label="Add chlorine">
+                    <span class="chem-atom__sym">Cl</span>
+                    <span class="chem-atom__info">
+                      <span class="chem-atom__name">Chlorine</span>
+                      <span class="chem-atom__meta">Valence: 1</span>
+                    </span>
+                  </button>
                 </div>
-                <div class="chem-hudpill">
-                  <span class="chem-hudpill__k">Tip</span>
-                  <span id="hudTip">Drag atoms. Use palette to add.</span>
+              </div>
+            </div>
+
+            <div class="chem-bottom__right">
+              <div class="chem-bottomcard">
+                <div class="chem-bottomcard__title">Bonds</div>
+                <div class="chem-bondstack" aria-label="Bond order">
+                  <button id="bondSingle" class="chem-btn chem-btn--seg chem-btn--stack is-active" type="button" data-bond="1">Single</button>
+                  <button id="bondDouble" class="chem-btn chem-btn--seg chem-btn--stack" type="button" data-bond="2">Double</button>
+                  <button id="bondTriple" class="chem-btn chem-btn--seg chem-btn--stack" type="button" data-bond="3">Triple</button>
                 </div>
               </div>
 
-              <div id="workspace" class="chem-canvas" role="application" aria-label="Molecule canvas" tabindex="0">
-                <svg id="bondLayer" class="chem-bonds" aria-hidden="true"></svg>
-                <div id="atomLayer" class="chem-atoms" aria-hidden="false"></div>
+              <div class="chem-bottomcard chem-bottomcard--settings">
+                <div class="chem-bottomcard__title">Settings</div>
+                <div class="chem-settingsgrid">
+                  <div class="chem-level-select">
+                    <label class="chem-control__label" for="difficultySelect">Difficulty</label>
+                    <select id="difficultySelect" class="chem-select chem-select--sm" aria-label="Select difficulty">
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                      <option value="hardcore">Hardcore</option>
+                    </select>
+                  </div>
+                  <div class="chem-level-select">
+                    <label class="chem-control__label" for="levelSelect">Level</label>
+                    <select id="levelSelect" class="chem-select" aria-label="Select level"></select>
+                  </div>
+                </div>
               </div>
+            </div>
+          </section>
 
-              <div class="chem-feedback" aria-live="polite" aria-atomic="true">
-                <div id="feedback" class="chem-feedback__text">Build a structure that matches the formula, then submit.</div>
-                <div id="fact" class="chem-feedback__fact" hidden></div>
-              </div>
-            </section>
+          <!-- Hidden elements kept for JS hooks (status + optional helpers) -->
+          <div class="chem-hidden" aria-hidden="true">
+            <div id="statusCounts"></div>
+            <div id="statusConn"></div>
+            <div id="statusValence"></div>
+            <button id="btnAnswer" type="button" tabindex="-1"></button>
+            <button id="btnRing6" type="button" tabindex="-1"></button>
+            <button id="btnAromatic" type="button" tabindex="-1"></button>
+            <button id="btnSnap" type="button" tabindex="-1"></button>
           </div>
         </div>
       </section>
